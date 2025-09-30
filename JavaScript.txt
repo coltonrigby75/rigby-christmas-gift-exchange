@@ -1,0 +1,54 @@
+document.addEventListener('DOMContentLoaded', () => {
+const people = [
+        { name: "Brad", image: "Brad.png" },
+        { name: "Cody", image: "Cody.png" },
+        { name: "Colton", image: "Colton.png" },
+        { name: "Dixie", image: "Dixie.png" },
+        { name: "Jessica", image: "Jessica.png" },
+        { name: "Kyla", image: "Kyla.png" },
+        { name: "Kylee", image: "Kylee.png" },
+        { name: "Tanner", image: "Tanner.png" }
+    ];
+
+    const baseYear = 2025;
+
+    const giversColumn = document.getElementById('givers-column');
+    const receiversColumn = document.getElementById('receivers-column');
+    const yearDisplay = document.getElementById('year-display');
+
+    const today = new Date();
+    let displayYear = today.getFullYear();
+    if (today.getMonth() === 11 && today.getDate() <= 25) { // Month is 0-indexed, so 11 is December
+        displayYear = today.getFullYear() - 1;
+    }
+    
+    yearDisplay.textContent = displayYear;
+
+    const yearsPassed = displayYear - baseYear;
+    const numPeople = people.length;
+
+    const givers = [...people];
+    let receivers = [...people];
+
+    for (let i = 0; i <= yearsPassed; i++) {
+        const lastPerson = receivers.pop();
+        receivers.unshift(lastPerson);
+    }
+    
+    function createPersonCard(person) {
+        return `
+            <div class="person-card">
+                <img src="images/${person.image}" alt="${person.name}">
+                <p>${person.name}</p>
+            </div>
+        `;
+    }
+
+    givers.forEach(person => {
+        giversColumn.innerHTML += createPersonCard(person);
+    });
+
+    receivers.forEach(person => {
+        receiversColumn.innerHTML += createPersonCard(person);
+    });
+});
